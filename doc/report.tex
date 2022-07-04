@@ -4,8 +4,11 @@
 \usepackage{lastpage}
 \usepackage{geometry}
 \usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{enumerate}
 \usepackage{tikz}
 \usepackage{url}
+\newtheorem{thm}{定理}
 \usetikzlibrary{positioning, shapes.geometric}
 
 \usepackage{geometry}
@@ -20,7 +23,6 @@
 \lfoot{}
 \title{\textbf{\huge{Julia 集的分析和探索}}}
 \author{邵盛栋\\信息与计算科学 3200103951}
-\date{}
 \tikzstyle{decision} = [diamond, aspect = 4, text centered, draw=black]
 
 \usepackage{url}
@@ -55,13 +57,39 @@
 	Julia集以法国数学家Gaston Julia的名字命名，他在1915年研究了它们的性质，并在1918年发表了他的著名论文：\textbf{Mémoire sur l'itération des fonctions rationnelles}。虽然Julia集现在与$ z_{n+1}=z_{n}^{2}+c $有关，但Julia感兴趣的是更一般表达式的迭代性质，即
 	\[z^{4}+\dfrac{z^{3}}{z-1}+\dfrac{z^{2}}{z^{3}+4z^{2}+5}+c\]
 	由$ z_{n+1}=z_{n}^{2}+c $定义的Julia集合可以有各种形状，c的一个小变化可以极大地改变Julia集合。1979年，在计算机的帮助下，B.B.Mandelbrot研究了Julia集，试图对所有可能的形状进行分类，并提出了一个新的形状: Mandelbrot集\cite{douady1986julia}。
-	\subsection{与Mandelbrot集之间的关系}
+	\subsection{相关定理}
+	\begin{thm} 
+		在$c$已知的情况下，$ z_{0} $的轨道趋向于无穷大当且仅当在某个点它的模$ \textgreater2 $。
+	\end{thm}
+	
+	该定理等价于以下定理：
+	\begin{thm} 
+		若$ z_{0}\in J $，则$ |z_{n}|\leq 2,(n=1,2,\dots) $。
+	\end{thm}
+	下面是对定理2的证明：
+	\begin{proof}
+		要证明若存在$ n(n\geq 1) $，使得$ |z_{n}|>2 $，则$ z_{0}\notin J $\\
+		首先分别讨论$ |z_{0}|>2 $与$ |z_{0}|\leq 2 $两种情形\\
+		显然当存在$ n(n\geq 1) $使得$ |z_{n}|>2 $且$ |z_{0}|>2 $时，$ z_{0}\notin J $.\\
+		接着要证明$ |z_{0}|\leq 2 $时的情况：\\
+		假设$ |z_{n}|>2 $，因为$ |z_{0}|\leq 2 $，所以$ |z_{n}|>|z_{0}| $，而\\
+		\[|z_{n+1}|=|z_{n}^{2}+z_{0}|\geq|z_{n}^{2}|-|z_{0}|=|z_{n}|^{2}-|z_{0}|\]
+		因为$ |z_{n}|>|z_{0}| $\\
+		\[|z_{n}|^{2}-|z_{0}|>|z_{n}|^{2}-|z_{n}|\]
+		由$ |z_{n}|>2 $，左右同乘$ |z_{n}| $再减去$ |z_{n}| $可得到下式\\
+		\[|z_{n}|^{2}-|z_{n}|>2|z_{n}|-|z_{n}|=|z_{n}|\]
+		由以上可知$ |z_{n+1}|>|z_{n}| $\\
+		由数学归纳法可知$ 2<|z_{n}|<|z_{n+1}|<|z_{n+2}|<\dots $，可以看出随着迭代次数的增加$ |z_{n}| $递增并且发散。\\
+		所以在存在$ n(n\geq 1) $使得$ |z_{n}|>2 $且$ |z_{0}|\leq 2 $的情况下也是$ z_{0}\notin J $。\\
+		综上所述，若存在$ n(n\geq 1) $使得$ |z_{n}|>2 $，则$ z_{0}\notin J $
+	\end{proof}
+	\subsection{与Mandelbrot集之间的关系：}
 	由于Mandelbrot集合的定义，在给定点上Mandelbrot集合的几何与对应的Julia集合的结构之间有密切的对应关系。换句话说，Mandelbrot集合形成了Julia集合的一种索引。\cite{lei1990similarity}Julia集合要么是连通的，要么是断开的，从Mandelbrot集合内选择的c值是连通的，而从Mandelbrot集合外选择的c值是断开的。这些不相连的集合通常被称为$ dust $，它们由独立的点组成，不管它们以什么分辨率被观察\cite{Juliaset}。
 	\section{算法}
 	算法如流程图\ref{fig:1}所示
 	\begin{figure}[htpb]
 		\centering
-		\begin{tikzpicture}[node distance=16pt]
+		\begin{tikzpicture}[node distance=20pt]
 			\node[draw, rounded corners]                        (start)   {开始};
 			\node[draw, below=of start]                         (step 1)  {构建一个宽度$ \times $高度为$ 1500\times1500 $的位图};
 			\node[draw, below=of step 1]                        (step 2)  {定义函数\verb|write_header()|和\verb|write_pixel()|，实现对像素点颜色属性的赋值};
@@ -99,10 +127,10 @@
 	\section{数值算例}
 	当我们取不同的复数c的值时，我们能够得到不同的Julia集，这些Julia集大小不同，形状各异，当取某些特定的c的值的时候，对应的Julia集会形成一个连通的区域。执行以下命令可得到相应的pbm图像：
 	\begin{verbatim}
-		./bin/juliaset -0.4 0.6 picture1.pbm
-		./bin/juliaset -0.8 0.156 picture2.pbm
-		./bin/juliaset 0.28 0.01 picture3.pbm
-		./bin/juliaset 0.3 0.5 picture4.pbm
+		./juliaset -0.4 0.6 picture1.pbm
+		./juliaset -0.8 0.156 picture2.pbm
+		./juliaset 0.28 0.01 picture3.pbm
+		./juliaset 0.3 0.5 picture4.pbm
 	\end{verbatim}
 	以下是取不同的c时，对应的Julia集的图像：
 	\begin{figure}[ht]
