@@ -1,1 +1,5 @@
-./juliaset 0.28 0.01 picture.bmp
+./bin/juliaset -0.4 0.6 picture1.pbm
+./bin/juliaset -0.8 0.156 picture2.pbm
+./bin/juliaset 0.28 0.01 picture3.pbm
+./bin/juliaset 0.3 0.5 picture4.pbm
+

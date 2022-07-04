@@ -1,0 +1,95 @@
+\documentclass[UTF8]{ctexbeamer}
+\usetheme{Madrid}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{subfigure}
+\usepackage{url}
+\usetikzlibrary{positioning, shapes.geometric}
+\DeclareGraphicsExtensions{.eps,.ps,.jpg,.bmp,.png}
+\title[Analysis and exploration of Julia sets]
+{Julia 集的分析和探索}
+
+\author[SHAO Shengdong]
+{邵盛栋}
+\institute[3200103951]
+{
+	信息与计算科学
+	\and
+	3200103951
+}
+
+\date[July 4]
+{2022年，7月4日}
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+\begin{document}
+	\maketitle
+	\begin{frame}
+		\frametitle{目录}
+		\tableofcontents \qquad{\Large 1 引言}
+		\tableofcontents \qquad{\Large 2 数学理论}
+		\tableofcontents \qquad{\Large 3 算法}
+		\tableofcontents \qquad{\Large 4 数值算例}
+		\tableofcontents \qquad{\Large 5 结论}
+	\end{frame}
+	\begin{frame}{引言}
+		Julia集合可由下式进行反复迭代得到：
+		\[f_{c}(z)=z^{2}+c\]
+		
+		对于固定的复数$ c $，取某一$ z $值（如$ z=z_{0} $），可以得到序列
+		\[z_{0},f_{c}(z_{0}),f_{c}(f_{c}(z_{0})),f_{c}(f_{c}(f_{c}(z_{0}))),\dots\]
+		
+		这一序列可能反散于无穷大或始终处于某一范围之内并收敛于某一值。我们将使其不扩散的$ z $值的集合称为Julia集合。
+	\end{frame}
+	\begin{frame}
+		\frametitle{数学理论}
+		{\Large 背景：}\\
+		Julia集以法国数学家Gaston Julia的名字命名，他在1915年研究了它们的性质，并在1918年发表了他的著名论文：\textbf{Mémoire sur l'itération des fonctions rationnelles}。虽然Julia集现在与$ z_{n+1}=z_{n}^{2}+c $有关，但Julia感兴趣的是更一般表达式的迭代性质，即
+		\[z^{4}+\dfrac{z^{3}}{z-1}+\dfrac{z^{2}}{z^{3}+4z^{2}+5}+c\]
+		由$ z_{n+1}=z_{n}^{2}+c $定义的Julia集合可以有各种形状，c的一个小变化可以极大地改变Julia集合。1979年，在计算机的帮助下，B.B.Mandelbrot研究了Julia集，试图对所有可能的形状进行分类，并提出了一个新的形状: Mandelbrot集\cite{douady1986julia}。
+	\end{frame}
+	\begin{frame}
+		\frametitle{数学理论}
+		{\Large 与Mandelbrot集之间的关系：}
+		\\ \hspace*{\fill} \\
+		由于Mandelbrot集合的定义，在给定点上Mandelbrot集合的几何与对应的Julia集合的结构之间有密切的对应关系。换句话说，Mandelbrot集合形成了Julia集合的一种索引。\cite{lei1990similarity}Julia集合要么是连通的，要么是断开的，从Mandelbrot集合内选择的c值是连通的，而从Mandelbrot集合外选择的c值是断开的。这些不相连的集合通常被称为$ dust $，它们由独立的点组成，不管它们以什么分辨率被观察\cite{Juliaset}。
+	\end{frame}
+	\begin{frame}
+		\frametitle{算法}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{算法}
+		\end{figure}
+	\end{frame}
+	\begin{frame}
+		\frametitle{数值算例}
+		\begin{figure}[ht]
+			\centering
+			\subfigure[$ c=-0.4+0.6i $]{\includegraphics[width=0.4\linewidth]{../image/picture1}}
+			\subfigure[$ c=-0.8+0.156i $]{\includegraphics[width=0.4\linewidth]{../image/picture2}}
+		\end{figure}
+	\end{frame}
+	\begin{frame}
+		\frametitle{数值算例}
+		\begin{figure}[ht]
+			\centering
+			\subfigure[$ c=0.28+0.01i $]{\includegraphics[width=0.4\linewidth]{../image/picture3}}
+			\subfigure[$ c=0.3+0.5i $]{\includegraphics[width=0.4\linewidth]{../image/picture4}}
+		\end{figure}
+	\end{frame}
+	\begin{frame}
+		\frametitle{结论}
+		Julia集的中c的不同取值可反映出复数z不同的发散程度，本文中的代码将复数z收敛与发散两种不同情况进行区分，并赋予不同的颜色，由此得到不同的美丽的图案。在此基础上，我们仍可以通过改变维数以及改变c的值，得到一些新的研究思路与方法，发现复变函数中“分形”之美。
+	\end{frame}
+	\begin{frame}
+		\frametitle{参考文献}
+		\bibliographystyle{unsrt}
+		\bibliography{literature}
+	\end{frame}
+\end{document}
